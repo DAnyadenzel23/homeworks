@@ -13,7 +13,9 @@ for i in range(w):
     list_cars.append(input())
 sort_list_cars = sorted(list_cars)
 print(sort_list_cars)
+if len(list_names)== len(list_cars):
+    result = list(zip(sort_list_cars, sort_list_names,fillvalue='Пролетел с машиной'))
+    print(result)
 
-from itertools import zip_longest
-result = list(zip_longest(sort_list_cars, sort_list_names,fillvalue='Пролетел с машиной'))
-print(result)
+else:
+    print('Кому-то не достанется машины(((')
