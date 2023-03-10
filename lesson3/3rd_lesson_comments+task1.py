@@ -14,3 +14,13 @@ elif n%2==0:
     print('в этом месяце 30 дней')
 else:
     print('в этом месяце 31 дней')
+
+
+q = int(input('Вводим количес тво элементов списка: '))
+
+list =[]
+for i in range(q):
+    list.append(input())
+
+print(list)
+
