@@ -21,16 +21,15 @@ def change_calc(price, enter_money):
         while change != 0:
             for i in bank_list:
                 if change//i>0:
-                    n = change/i#количество данных купюр
+                    n = change//i#количество данных купюр
                     for p in range(int(n)):
                         change_list.append(i)
-                    change -= i*n
+                        change = round(change, 2) -i
         return change_list
 
 
 
-
-
-price = float(input('Введите стоимость товара: '))
-enter_money = input('Введите внесенные купюры: ').split()
-print(change_calc(price, enter_money))
+if __name__=='__main.py':
+    price = float(input('Введите стоимость товара: '))
+    enter_money = input('Введите внесенные купюры: ').split()
+    result = change_calc(price, enter_money)
