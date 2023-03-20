@@ -6,3 +6,6 @@ enter_money = input('Введите внесенные купюры: ').split()
 result = change_calc(price, enter_money)
 
 print(result)
+
+
+
