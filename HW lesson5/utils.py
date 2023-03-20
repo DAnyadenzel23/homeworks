@@ -3,9 +3,9 @@ bank_list = sorted(banknotes, reverse=True)# Сортировка от боль�
                                            # для выдачи наименьшего количества купюр
 
 def change_calc(price, enter_money):
-    enter_sum = list(map(float, enter_money))# Делаем список с данными типа float
-    sum_enter = sum(enter_sum)  #Общая сумма, внесенная покупателем
-    change1 = sum_enter - price#Сдача
+    cash_deposited1 = list(map(float, enter_money))# Делаем список с данными типа float
+    cash_deposited = sum(cash_deposited1)  #Общая сумма, внесенная покупателем
+    change1 = cash_deposited - price#Сдача
     change = round(change1, 2)#Округляем до второго знака
     if price <= 0:
         print('Некорректно введена стоимость товара')
@@ -22,8 +22,8 @@ def change_calc(price, enter_money):
         while change != 0:
             for i in bank_list:
                 if change//i > 0:
-                    n = change//i#количество данных купюр
-                    for p in range(int(n)):
+                    numb_of_bills = change//i#количество данных купюр
+                    for p in range(int(numb_of_bills)):
                         change_list.append(i)
                         change = round(change, 2) - i
         return change_list
