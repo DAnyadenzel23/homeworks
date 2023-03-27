@@ -1,21 +1,3 @@
-'''1.Определите класс Person().
-В функции init() определите несколько атрибутов человека. Хорошими атрибутами, которые следует учитывать, являются имя, возраст, место рождения
-и все, что вам нужно знать о людях в вашей жизни. Не менее 3 атрибутов.
-Напишите один метод. Это может быть просто introduce_yourself(). Этот метод выводит такое утверждение, как «Здравствуйте, меня зовут Эрик».
-Вы также можете создать такой метод, как age_person(). Простая версия этого метода просто добавит 1 к возрасту человека.
-Создайте человека, установите соответствующие значения атрибутов и выведите информацию о человеке.
-Вызовите свой метод для человека, которого вы создали. Убедитесь, что ваш метод выполняется правильно; если метод ничего не выводит напрямую,
- напечатайте что-нибудь до и после вызова метода, чтобы убедиться, что он сделал то, что предполагалось.
-2.Студенческий класс
-Начните с вашей программы из класса Person.
-Создайте новый класс под названием Student, который наследуется от Person.
-Определите некоторые качества, которые есть у учащегося, которых нет у других людей. У учащегося есть школа, с которой он связан,
-год выпуска, средний балл и другие особые атрибуты.
-Создайте объект Student и докажите, что вы правильно использовали наследование.
-Установите некоторые значения атрибутов для учащегося, которые закодированы только в классе Person.
-Установите некоторые значения атрибутов для учащегося, которые закодированы только в классе учащегося.
-Выведите значения для всех этих атрибутов.'''
-
 class Person():
 
     def __init__(self, name, age, place_of_birth,totem_animal):
@@ -24,17 +6,68 @@ class Person():
         self.place_of_birth = place_of_birth
         self.totem_animal = totem_animal
 
-    def introduce(self, p_name, p_age, p_place_of_birth, p_totem_animal):
-        self.name = p_name
-        self.age = p_age
-        self.place_of_birth = p_place_of_birth
-        self.totem_animal = p_totem_animal
-        print('Hello, my name is %s. I am %d years old. My place of birth is %s.' %(p_name, p_age, p_place_of_birth))
-        if p_totem_animal is None:
+    def introduce(self):
+        print('- Hello, my name is %s. I am %d years old. My place of birth is %s.' %(self.name, self.age, self.place_of_birth))
+        if self.totem_animal is None:
             print('I don`t have a pet')
         else:
-            print('My pet is ', p_totem_animal)
+            print('My pet is ', self.totem_animal)
+
+    def age_person(self,grow_up = 1):
+        self.age += grow_up
+
+    def age_difference(self, other_person):
+        differ = self.age - other_person.age
+        print('- Age difference is ', differ)
+
+
+    def fellow_countrymen(self, other_person):
+        if self.place_of_birth == other_person.place_of_birth:
+            print(' - Doesn`t matter, fellow countrymen! ')
+        else:
+            print('Villaribo and Villabadgo')
+
+class Student(Person):
+    def __init__(self, name, age, place_of_birth, totem_animal, university, diploma_topic, gpa, postgraduate_year):
+        self.university = university
+        self.diploma_topic = diploma_topic
+        self.gpa = gpa
+        self.postgraduate_year = postgraduate_year
+        super().__init__(name, age, place_of_birth, totem_animal)
+
+    def introduce(self):
+        super().introduce()
+        print('I study at the university %s. My diploma topic is %s. My gpa is %f. '
+              'I plan to go to graduate school for %d years'%(self.university, self.diploma_topic,
+                                                              self.gpa, self.postgraduate_year))
 
 person1 = Person('Daniil', 30, 'Olenegorsk', totem_animal=None)
 person1.introduce()
+print('\n')
+person2 = Person('Ekaterina', 30, 'Olenegorsk', 'dog Kasatka')
+person2.introduce()
+print('\n')
+person1.age_person()
+print('- Aged again. Now i am ', person1.age)
+print('\n')
+person1.age_difference(person2)
+print('\n')
+person2.fellow_countrymen(person1)
+print('\n')
 
+student1 = Student('Maksim', 27, 'Vsevolozhsk', 'turtle Boris', 'GUMRF', 'electric drive', 4.7, 3)
+print(student1.name)
+print(student1.age)
+print(student1.place_of_birth)
+print(student1.university)
+print(student1.diploma_topic)
+print(student1.gpa)
+print(student1.postgraduate_year)
+print('\n')
+student1.introduce()
+student1.age_person()
+print('- Aged again. Now i am ', student1.age)
+
+student1.age_difference(person2)
+
+person2.fellow_countrymen(student1)
