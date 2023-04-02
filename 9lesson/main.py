@@ -1,6 +1,6 @@
 import telebot
 from telebot import types
-from calc import calculate
+
 
 bot = telebot.TeleBot("6085283770:AAGIuLASO3WkuXl9NCPYGS1yBSqfMseiEjk")
 num_1 = ''
@@ -17,7 +17,7 @@ def start(message):
 def proc_num1(message):
     try:
         global num_1
-        num_1 = int(message.text)
+        num_1 = float(message.text)
 
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=4)
         btn1 = types.KeyboardButton('+')
@@ -44,7 +44,7 @@ def proc_oper(message):
 def proc_num_2(message):
     try:
         global num_2
-        num_2 = int(message.text)
+        num_2 = float(message.text)
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         btn = types.KeyboardButton('Результат')
         markup.add(btn)
