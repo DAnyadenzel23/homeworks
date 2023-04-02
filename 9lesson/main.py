@@ -38,7 +38,7 @@ def proc_oper(message):
         markup = types.ReplyKeyboardRemove(selective = False)
         msg = bot.send_message(message.chat.id, 'ведите второе число', reply_markup=markup)
         bot.register_next_step_handler(msg, proc_num_2)
-    except Exception as e:
+    except Exception as p:
         bot.reply_to(message, 'Ошибочка ввода1')
 
 def proc_num_2(message):
