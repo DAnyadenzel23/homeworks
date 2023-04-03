@@ -3,10 +3,7 @@ from telebot import types
 
 
 bot = telebot.TeleBot("6085283770:AAGIuLASO3WkuXl9NCPYGS1yBSqfMseiEjk")
-num_1 = ''
-num_2 = ''
-sign = ''
-result = ''
+
 @bot.message_handler(commands=['start'])
 def start(message):
 
@@ -16,9 +13,9 @@ def start(message):
 
 def proc_num1(message):
     try:
-        global num_1
-        num_1 = float(message.text)
-
+        num_1 = message.text
+        num_1 = num_1.replace(',', '.')
+        num_1 = float(num_1)
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=4)
         btn1 = types.KeyboardButton('+')
         btn2 = types.KeyboardButton('-')
@@ -27,47 +24,42 @@ def proc_num1(message):
         markup.add(btn1,btn2,btn3,btn4)
 
         msg = bot.send_message(message.chat.id, 'Выберите операцию',reply_markup=markup)
-        bot.register_next_step_handler(msg,proc_oper)
-    except Exception as e:
-        bot.reply_to(message, 'Ошибочка ввода0')
+        bot.register_next_step_handler(msg,proc_oper,num_1)
+    except ValueError:
+        bot.reply_to(message, 'Вводите только первое число!')
+        start(message)
 
-def proc_oper(message):
-    try:
-        global sign
-        sign = message.text
-        markup = types.ReplyKeyboardRemove(selective = False)
-        msg = bot.send_message(message.chat.id, 'ведите второе число', reply_markup=markup)
-        bot.register_next_step_handler(msg, proc_num_2)
-    except Exception as p:
-        bot.reply_to(message, 'Ошибочка ввода1')
+def proc_oper(message,num_1):
 
-def proc_num_2(message):
-    try:
-        global num_2
-        num_2 = float(message.text)
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn = types.KeyboardButton('Результат')
-        markup.add(btn)
-        msg = bot.send_message(message.chat.id, 'Показать результат?', reply_markup=markup)
-        bot.register_next_step_handler(msg, proc_result)
-    except Exception as e:
-        bot.reply_to(message, 'Ошибочка ввода2')
+    sign = message.text
+    markup = types.ReplyKeyboardRemove(selective = False)
+    msg = bot.send_message(message.chat.id, 'Введите второе число', reply_markup=markup)
+    bot.register_next_step_handler(msg, proc_num_2,num_1, sign)
 
-def proc_result(message):
-    try:
-        global result
-        result = eval(str(num_1) + sign + str(num_2))
-        markup = types.ReplyKeyboardRemove(selective = False)
-        if message.text == 'Результат':
-            bot.send_message(message.chat.id, print_res(), reply_markup=markup)
-    except Exception as e:
-        bot.reply_to(message, 'ХЗ что случилось')
 
-def print_res():
+def proc_num_2(message,num_1,sign):
+    num_2 = message.text
+    num_2 = num_2.replace(',', '.')
+    num_2 = float(num_2)
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    btn = types.KeyboardButton('Результат')
+    markup.add(btn)
+    msg = bot.send_message(message.chat.id, 'Показать результат?', reply_markup=markup)
+    bot.register_next_step_handler(msg, proc_result,num_1, sign, num_2)
+
+
+def proc_result(message,num_1,sign,num_2):
+
+    result = eval(str(num_1) + sign + str(num_2))
+    markup = types.ReplyKeyboardRemove(selective = False)
+    if message.text == 'Результат':
+        bot.send_message(message.chat.id, print_res(num_1,sign,num_2,result), reply_markup=markup)
+
+
+def print_res(num_1,sign,num_2,result):
 
     return 'Результат: ' + str(num_1) + ' ' + sign + ' ' + str(num_2) + '=' + str(result)
 
 
 if __name__=='__main__':
     bot.polling(none_stop=True, interval=0)
-
