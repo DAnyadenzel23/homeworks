@@ -44,7 +44,7 @@ class Teams:
         return self.defend
 
 # Создаем экземпляры класса Teams, а также список 1 ДИВИЗИОНА, в него записываем эти самые экзмепляры
-Arsenal = Teams('Arsenal', 90, 90, 90)
+Arsenal = Teams('Arsenal', 95, 95, 95)
 ManCity = Teams('ManCity', 90, 92, 91)
 Tottenham = Teams('Tottenham', 80, 80, 70)
 Newcastle = Teams('Newcastle', 83, 88, 94)
@@ -98,7 +98,13 @@ def championship(lst_of_teams):
         match(lst_of_matches[i][0], lst_of_matches[i][1])
         match(lst_of_matches[i][1], lst_of_matches[i][0])
 
-'''def transfer_window:'''
+def transfer_window(att_up, mid_up, def_up):
+    if sum(nums_of_upgrades) <= 10:
+       PythonTeam.transfer_to_attack(att_up)
+       PythonTeam.transfer_to_midfield(mid_up)
+       PythonTeam.transfer_to_defend(def_up)
+    else:
+        print('Вы попали в трасферный бан, эти очки не защитаны, так как попытались потратить больше 10,АХАХАХАХ')
 
 
 
@@ -110,22 +116,21 @@ for num in range(num_of_seasons_from_user):
 
     # Находим вылетевшие команды из 1ДЕВИЗИОНА во 2ДЕВИЗИОН
     Division_1_teams.sort(key=lambda x: x.points, reverse=True)
+    print('Абсолютный чемпион, на его место Вам нужно стремиться!', Division_1_teams[0].name)
     print('Команды на понижение в ' + str(num + 1) + 'сезоне:')
-    print(Division_1_teams[-2].name)
-    print(Division_1_teams[-1].name)
+    print(Division_1_teams[-2].name, Division_1_teams[-1].name)
 
     # Находим поднявшиеся команды из 2ДЕВИЗИОНА в 1ДЕВИЗИОН
-    Division_2_teams.sort(key=lambda x: x.points)
-    print('Команды на повышение в ' + str(num + 1) + ' сезоне:')
-    print(Division_2_teams[-1].name)
-    print(Division_2_teams[-2].name)
+    Division_2_teams.sort(key=lambda x: x.points, reverse=True)
+    print('Команды на повышение в ' + str(num + 1) + 'сезоне:')
+    print(Division_2_teams[0].name, Division_2_teams[1].name)
 
     # Перемещаем команды между дивизионами внутри общего списка
     all_teams = Division_1_teams + Division_2_teams
     num_of_teams = len(all_teams)
     if num_of_teams%2 == 0:
-        all_teams[int(num_of_teams/2)], all_teams[int(num_of_teams/2 + 1)] = all_teams[int(num_of_teams/2 + 1)], all_teams[int(num_of_teams/2)]
-        all_teams[int(num_of_teams / 2 - 1)], all_teams[int(num_of_teams/2 + 2)] = all_teams[int(num_of_teams/2 + 2)], all_teams[int(num_of_teams/2 - 1)]
+        all_teams[int(num_of_teams/2 - 1)], all_teams[int(num_of_teams/2)] = all_teams[int(num_of_teams/2)], all_teams[int(num_of_teams/2 - 1)]
+        all_teams[int(num_of_teams / 2 - 2)], all_teams[int(num_of_teams/2 + 1)] = all_teams[int(num_of_teams/2 + 1)], all_teams[int(num_of_teams/2 - 2)]
     else:
         all_teams[3], all_teams[4] = all_teams[5], all_teams[6] # условимся, что если добавляются новые команды,  то они заходят во второй дивизион
                                                                 # в первом дивизионе пусть всегда будет 5 команд
@@ -138,3 +143,14 @@ for num in range(num_of_seasons_from_user):
 
     Division_1_teams += new_1st_div
     Division_2_teams += new_2nd_div
+
+    if Division_1_teams[0].name == 'PythonTeam':
+        print('ОСТАНОВИСЬ! TЫ УЖЕ ВЫВЕЛ PythonTeam В ЧЕМПИОНЫ, С ПОБЕДОЙ!!!УРАААА!!! ')
+        break
+
+    print('Пришло время усилиться, потратьте очки усиления, чтобы в сумме было НЕ БОЛЕЕ 10, усилить можно АТАКУ,ПОЛУЗАЩИТУ И ОБОРОНУ')
+    lst_of_upgrades = input('распределите очки усиления: ').split()
+    nums_of_upgrades = [int(i) for i in lst_of_upgrades]
+    att_up, mid_up, def_up = nums_of_upgrades
+    transfer_window(att_up,mid_up,def_up)
+
