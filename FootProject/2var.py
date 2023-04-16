@@ -1,9 +1,9 @@
 # Двум игрокам (миллионерам, новоявленным владельцам клубов) предстоит попробовать вывести свои команды со дна второго дивизиона.
 # Каждый сезон Вы можете тратить очки улчшения на атаку, полузащиту и оборону, чтобы сделать команду сильнее.
 # Выберете себе по команде: PythonTeam или Gornyak. Рекомендуемое количество сезонов: 7-8 сезонов, но Вы можете попробовать и за 6.
-# Чья команда раньше окажется на вершине таблицы 1 ДИВИЗИОНА, тот победил. УДАЧИ!!!
+# Тот, кто раньше приведет свою команду на вершину таблицы 1 ДИВИЗИОНА, тот победил. УДАЧИ!!!
 import random
-import itertools
+import itertools 
 
 class Teams:
 
@@ -100,36 +100,58 @@ def championship(lst_of_teams):
         match(lst_of_matches[i][0], lst_of_matches[i][1])
         match(lst_of_matches[i][1], lst_of_matches[i][0])
 
-def transfer_window(upgrades_for_PythonTeam, upgrades_for_Gornyak):
-    att_up_pt, mid_up_pt, def_up_pt = upgrades_for_PythonTeam
-    if sum(upgrades_for_PythonTeam) <= 10:
-       PythonTeam.transfer_to_attack(att_up_pt)
-       PythonTeam.transfer_to_midfield(mid_up_pt)
-       PythonTeam.transfer_to_defend(def_up_pt)
-    else:
-        print('PythonTeam попали в трасферный бан, эти очки не защитаны, так как попытались потратить больше 10,АХАХАХАХ')
+# вводим и проверяем число введенных сезонов на правильность ввода
+def check_input():
+    while True:
+        try:
+            num_of_seasons_from_user = int(input('Введите количество сезонов: '))
+            return num_of_seasons_from_user
+        except ValueError:
+            print('вводите число')
+            continue
 
-    att_up_gk, mid_up_gk, def_up_gk = upgrades_for_Gornyak
-    if sum(upgrades_for_PythonTeam) <= 10:
-        Gornyak.transfer_to_attack(att_up_gk)
-        Gornyak.transfer_to_midfield(mid_up_gk)
-        Gornyak.transfer_to_defend(def_up_gk)
-    else:
-        print('Gornyak попали в трасферный бан, эти очки не защитаны, так как попытались потратить больше 10,АХАХАХАХ')
+def transfer_window_pt():
+    try:
+        lst_of_upgrades_pt = input('распределите очки усиления для команды PythonTeam: ').split()
+        nums_of_upgrades_pt = [int(i) for i in lst_of_upgrades_pt]
+        att_up_pt, mid_up_pt, def_up_pt = nums_of_upgrades_pt
+        if sum(nums_of_upgrades_pt) <= 10:
+           PythonTeam.transfer_to_attack(att_up_pt)
+           PythonTeam.transfer_to_midfield(mid_up_pt)
+           PythonTeam.transfer_to_defend(def_up_pt)
+        else:
+            print('PythonTeam попали в трасферный бан, эти очки не защитаны, так как попытались потратить больше 10,АХАХАХАХ')
+    except ValueError:
+        print('Внимательно! Вводите числа!')
+        return transfer_window_pt()
+
+def transfer_window_gk():
+    try:
+        lst_of_upgrades_gk = input('распределите очки улучшения для команды Gornyak: ').split()
+        nums_of_upgrades_gk = [int(i) for i in lst_of_upgrades_gk]
+        att_up_gk, mid_up_gk, def_up_gk = nums_of_upgrades_gk
+        if sum(nums_of_upgrades_gk) <= 10:
+            Gornyak.transfer_to_attack(att_up_gk)
+            Gornyak.transfer_to_midfield(mid_up_gk)
+            Gornyak.transfer_to_defend(def_up_gk)
+        else:
+            print('Gornyak попали в трасферный бан, эти очки не защитаны, так как попытались потратить больше 10,АХАХАХАХ')
+    except ValueError:
+        print('Внимательно! Вводите числа!')
+        return transfer_window_gk()
+
 
 def print_the_table(div_1, div_2):
     print('РЕЗУЛЬТАТЫ В ПЕРВОМ ДИВИЗИОНЕ:')
-    print(div_1[0].name, div_1[0].points)
-    print(div_1[1].name, div_1[1].points)
-    print(div_1[2].name, div_1[2].points)
-    print(div_1[3].name, div_1[3].points)
-    print(div_1[4].name, div_1[4].points)
+    for i in range(len(div_1)):
+        print(div_1[i].name, div_1[i].points)
     print('РЕЗУЛЬТАТЫ ВО ВТОРОМ ДИВИЗИОНЕ:')
     for i in range(len(div_2)):
         print(div_2[i].name, div_2[i].points)
 
 # Стартуем, вводим количество сезонов
-num_of_seasons_from_user = int(input('Введите количество сезонов: '))
+
+num_of_seasons_from_user = check_input()
 for num in range(num_of_seasons_from_user):
     championship(Division_1_teams)
     championship(Division_2_teams)
@@ -137,6 +159,7 @@ for num in range(num_of_seasons_from_user):
     # Находим вылетевшие  и поднявшиеся команды, отсортировав по количеству набранных очков по убыванию внутри каждого из дивизионов
     Division_1_teams.sort(key=lambda x: x.points, reverse=True)
     Division_2_teams.sort(key=lambda x: x.points, reverse=True)
+    print(num+1,' СЕЗОН:')
     print_the_table(Division_1_teams, Division_2_teams)
     if Division_1_teams[0].name == 'PythonTeam' or Division_1_teams[0].name == 'Gornyak':
         print('Поздравляем команду ' + Division_1_teams[0].name + '. Вы победили и стали чеспионом 1Дивизиона')
@@ -175,11 +198,8 @@ for num in range(num_of_seasons_from_user):
         if num+1 < num_of_seasons_from_user:
             print('Пришло время усилиться, потратьте очки усиления, чтобы в сумме было НЕ БОЛЕЕ 10, усилить можно АТАКУ,ПОЛУЗАЩИТУ И ОБОРОНУ, соответственно')
             print('Вводите целые числа через пробел')
-            lst_of_upgrades_pt = input('распределите очки усиления для команды PythonTeam: ').split()
-            nums_of_upgrades_pt = [int(i) for i in lst_of_upgrades_pt]
-            lst_of_upgrades_gk = input('распределите очки улучшения для команды Gornyak: ').split()
-            nums_of_upgrades_gk = [int(i) for i in lst_of_upgrades_gk]
-            transfer_window(nums_of_upgrades_pt, nums_of_upgrades_gk)
+            transfer_window_pt()
+            transfer_window_gk()
             print('-----------------------------------------------------')
             print('-----------------------------------------------------')
         else:
