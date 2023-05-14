@@ -3,7 +3,8 @@
 # Выберете себе по команде: PythonTeam или Gornyak. Рекомендуемое количество сезонов: 7-8 сезонов, но Вы можете попробовать и за 6.
 # Тот, кто раньше приведет свою команду на вершину таблицы 1 ДИВИЗИОНА, тот победил. УДАЧИ!!!
 import random
-import itertools 
+import itertools
+from units.unit import championship
 
 class Teams:
 
@@ -61,7 +62,7 @@ PythonTeam = Teams('PythonTeam', 77, 75, 78)
 Gornyak = Teams('Gornyak', 78, 75, 77)
 Division_2_teams = [Liverpool, Brighton, AstonVilla,  Fulham,  PythonTeam, Gornyak]
 
-def match(team_1, team_2):
+'''def match(team_1, team_2):
 
     goal_1 = 0
     goal_2 = 0
@@ -88,17 +89,16 @@ def match(team_1, team_2):
         points = 1
         team_1.bank_of_points(points)
         team_2.bank_of_points(points)
-    '''print(''f'{team_1.name}: {goal_1} - {goal_2} :{team_2.name}')'''
+    
 
 def championship(lst_of_teams):
     lst_of_matches = []
     for teams in itertools.combinations(lst_of_teams, 2):
         lst_of_matches.append(teams)
-    '''print('Результаты матчей:')'''
-
+    
     for i in range(len(lst_of_matches)):
         match(lst_of_matches[i][0], lst_of_matches[i][1])
-        match(lst_of_matches[i][1], lst_of_matches[i][0])
+        match(lst_of_matches[i][1], lst_of_matches[i][0])'''
 
 # вводим и проверяем число введенных сезонов на правильность ввода
 def check_input():
