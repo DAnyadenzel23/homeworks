@@ -1,7 +1,7 @@
 import random
 import itertools
 def match(team_1, team_2):
-
+# Функции одного матча и целого сезона для обоих дивизионов
     goal_1 = 0
     goal_2 = 0
     for i in range(6):
